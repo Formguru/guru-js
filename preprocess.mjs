@@ -276,7 +276,7 @@ const copyMakeBorder = (
   const dstHeight = srcHeight + top + bottom;
   const data = image.getData({ channelsFirst: false });
 
-  const ArrayType = arr.constructor;
+  const ArrayType = data.constructor;
   let output = new ArrayType(dstWidth * dstHeight * image.numChannels);
 
   for (var row = 0; row < srcHeight; row++) {
