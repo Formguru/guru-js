@@ -106,33 +106,6 @@ function centerToCornersFormat([centerX, centerY, width, height]) {
   ];
 }
 
-function cropImage(imageData, boundingBox) {
-  const { data, width } = imageData;
-  const x = Math.round(boundingBox.topLeft.x * imageData.width);
-  const y = Math.round(boundingBox.topLeft.y * imageData.height);
-  const bboxWidth = Math.round(boundingBox.bottomRight.x * imageData.width - x);
-  const bboxHeight = Math.round(boundingBox.bottomRight.y* imageData.height - y);
-  const bytesPerPixel = 4;
-
-  // Create a new Uint8ClampedArray for the cropped image data
-  const croppedData = new Uint8ClampedArray(bboxWidth * bboxHeight * bytesPerPixel);
-
-  // Iterate over the rows and columns of the bounding box
-  for (let row = 0; row < bboxHeight; row++) {
-    const srcStartIndex = ((y + row) * width + x) * bytesPerPixel;
-    const destStartIndex = Math.min(row * bboxWidth * bytesPerPixel, croppedData.length - 1);
-
-    // Copy the pixels from the source image data to the cropped image data
-    croppedData.set(data.subarray(srcStartIndex, srcStartIndex + bboxWidth * bytesPerPixel), Math.min(destStartIndex, croppedData.length - 1));
-  }
-
-  return {
-    data: croppedData,
-    width: bboxWidth,
-    height: bboxHeight,
-  };
-}
-
 export function descaleCoords(x, y, originalWidth, originalHeight, scaledWidth, scaledHeight) {
   return [
     x * (originalWidth / scaledWidth) / originalWidth,
@@ -608,7 +581,7 @@ export function tensorToMatrix(tensor) {
   }
 
   const dimensions = [...tensor.dims];
-  const matrix = reshapeArray(dataArray, dimensions);
+  const matrix = reshapeArray(dataArray, tensor.dims);
   matrix.size = function() {
     return dimensions;
   };
