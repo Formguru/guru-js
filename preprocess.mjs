@@ -250,8 +250,8 @@ const normalize = (image) => {
   const output = new Float32Array(3 * height * width);
 
   // if input is integer in [0,255], convert to float32 in [0,1]
-  const isUint8 = hwc.some((x) => x % 1 !== 0);
-  const normFactor = isUint8 ? 1 : 255.0;
+  const isFloat = hwc.some((x) => x % 1 !== 0);
+  const normFactor = isFloat ? 1 : 255.0;
 
   // rgb
   const mean = [0.48145466, 0.4578275, 0.40821073];
