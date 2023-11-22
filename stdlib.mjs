@@ -102,20 +102,6 @@ export class FrameObject {
   }
 }
 
-const _createModelLoader = () => {
-  const _cache = {};
-
-  return (modelName) => {
-
-    if (!_cache[modelName]) {
-      _cache[modelName] = loadModelByName(modelName);
-    }
-
-    return _cache[modelName]
-  }
-};
-const _loadModel = _createModelLoader();
-
 /**
  * A single frame from a video, or image, on which Guru can perform inference.
  */
