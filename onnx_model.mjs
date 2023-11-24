@@ -1,4 +1,4 @@
-import { loadModelByName } from "./onnxruntime.mjs";
+import { getOrt, loadModelByName } from "./onnxruntime.mjs";
 
 class OnnxModel {
 
