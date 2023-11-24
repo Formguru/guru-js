@@ -556,6 +556,12 @@ export class MovementAnalyzer {
       ignoreStartMs = null,
       ignoreEndMs = null,
     } = {}) {
+    personFrames.forEach((personFrame) => {
+      if (!personFrame) {
+        throw new Error("Encountered a null FrameObject. Ensure 'personFrames' does not contain nulls.");
+      }
+    });
+
     if (!ignoreStartMs || !ignoreEndMs) {
       const [estimatedStartMs, estimatedEndMs] = GeneralAnalyzer.estimateStartAndEndTrim(personFrames);
       if (!ignoreStartMs) {
