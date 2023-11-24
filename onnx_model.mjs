@@ -23,7 +23,15 @@ class OnnxModel {
     );
 
     return new OnnxModel(inputName, session, _metadata);
-  }  
+  }
+
+  static async loadFromUrl(url, sessionOptions = { executionProviders: ['wasm'] }, metadata) {
+    const session = await getOrt().InferenceSession.create(
+      url,
+      sessionOptions,
+    );
+    return OnnxModel.loadFromSession(session, metadata);
+  }   
 }
 
 class ImgNormCfg {
