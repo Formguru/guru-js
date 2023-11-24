@@ -1,4 +1,4 @@
-import { loadModelByName } from "guru/onnxruntime.mjs";
+import { loadModelByName } from "./onnxruntime.mjs";
 
 class OnnxModel {
 
