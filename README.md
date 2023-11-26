@@ -24,13 +24,13 @@ Create your first schema in the [Guru Console](https://docs.getguru.ai/quickstar
 
 ## Core Libraries
 
-- `stdlib.mjs`: Fundamental utility classes and functions for basic operations like frame and object handling in computer vision tasks.
-- `pose_estimation.mjs`: Implements pose estimation functionalities, crucial for human movement analysis in images and videos.
-- `onnxruntime.mjs` and onnx_model.mjs: Facilitate the integration and use of ONNX (Open Neural Network Exchange) models, ensuring efficient model performance and advanced machine learning capabilities.
-- `object_tracking.mjs`: Provides object tracking features, essential for tracking objects across video frames.
-- `object_detection.mjs`: Implements object detection algorithms, a cornerstone for many computer vision applications.
+- `stdlib.mjs`: Utility functions for analyzing outputs of vision models
 - `core_types.mjs`: Defines fundamental types and structures used across the library, forming the backbone of the library's modular architecture.
 - `draw.mjs`: Offers drawing and annotation tools for visualization purposes, enhancing the interpretability of computer vision outputs.
+- `pose_estimation.mjs`: Implements pose estimation functionalities.
+- `onnxruntime.mjs` and `onnx_model.mjs`: Facilitate the integration and use of ONNX (Open Neural Network Exchange) models, ensuring efficient model performance and advanced machine learning capabilities.
+- `object_tracking.mjs`: Provides object tracking features, essential for tracking objects across video frames.
+- `object_detection.mjs`: Implements object detection algorithms, a cornerstone for many computer vision applications.
 
 ## License
 
