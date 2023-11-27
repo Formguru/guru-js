@@ -1,26 +1,32 @@
-# Guru Computer Vision Javascript Libraries
+# guru.js -- Javascript Libraries for Computer Vision
 
 ## Overview
 
-These Javascript libraries implement a common execution environment for [Guru Schemas](https://docs.getguru.ai/quickstart/guru-schema-intro), tailored specifically for advanced computer vision tasks such as object detection, pose estimation, and movement analysis.
+`guru-js` is a Javascript framework for using state-of-the-art vision models for specific computer vision tasks.
 
-**Important Note:** These libraries are built into the [Guru platform](https://www.getguru.ai/) and are provided to users at runtime. They are not intended for direct use outside the Guru platform. This repository is primarily for documentation, issue tracking, and contributing to the library's development.
+**❗ Important Note**
 
-You can sign up for Guru [here](https://console.getguru.ai/). Check out our [docs](https://docs.getguru.ai/introduction) and [Discord](https://discord.gg/tCTPVkSCas) for more info and support.
+These libraries implement a common execution environment for [Guru Schemas](https://docs.getguru.ai/quickstart/guru-schema-intro) and are provided to users at runtime via the [Guru platform](https://www.getguru.ai/).
+
+They are not intended for direct use outside the Guru platform. This repository is primarily for documentation, issue tracking, and contributing to the library's development.
 
 ## Quickstart
 
-Create your first schema in the [Guru Console](https://docs.getguru.ai/quickstart/guru-console-intro) to play with these libraries.
+To play with these libraries, create your first **Guru Schema** in the [Guru Console](https://docs.getguru.ai/quickstart/guru-console-intro). Check out the [Guru docs](https://docs.getguru.ai/introduction) and the [Guru Discord](https://discord.gg/tCTPVkSCas) for more info and support.
 
 ## Features
 
-`guru-js` is a framework for combining and analyzing state-of-the-art vision models for specific computer vision tasks. This includes:
+**Modular Design**: Combine advanced vision models in a few lines of code in simple Javascript syntax.
 
-- **Advanced Pose Estimation, Object Detection, and Tracking**: State-of-the-art models for analyzing human movement and object behavior in real-time.
-- **Analysis Helper Functions**: `Analyzers` like `MovementAnalyzer` that provide easy-to-use libraries for domain-specific analysis of model output like sports or retail.
-- **Customizable Visualization Tools**: Drawing and annotation capabilities to visualize analysis results on images and videos.
-- **Bring Your Own Model**: Import, leverage, and combine any ONNX model into one AI workflow.
-- **Deploy Anywhere**: With the Guru Platform, any AI app built with these tools can be deployed on the cloud or mobile in [one-click](https://docs.getguru.ai/deploying/guru-api-intro).
+**Analysis Helper Functions**: Analyzers like `MovementAnalyzer` provide easy-to-use libraries for domain-specific AI analysis for domains such as sports, healthcare, or retail.
+
+**Advanced Guru Models**: `guru.js` is pre-packaged with state-of-the-art models for tracking movement, humans, and objects in real-time.
+
+**Bring Your Own Model**: Import and leverage any ONNX model into a `guru-js` app alongside other models.
+
+**Customizable Visualization Tools**: Drawing and annotation capabilities to [visualize analysis results](https://www.loom.com/share/458a8cf435a64f01ba8fa86454d9f013) on videos.
+
+**Deploy Anywhere**: Any app built with `guru.js` can be deployed on the cloud or mobile in [one-click](https://docs.getguru.ai/deploying/guru-api-intro).
 
 ## Core Libraries
 
