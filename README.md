@@ -4,25 +4,21 @@
 
 `guru-js` is a Javascript framework for using state-of-the-art vision models for specific computer vision tasks.
 
-**❗ Important Note**
-
-These libraries implement a common execution environment for [Guru Schemas](https://docs.getguru.ai/quickstart/guru-schema-intro) and are provided to users at runtime via the [Guru platform](https://www.getguru.ai/).
-
-They are not intended for direct use outside the Guru platform. This repository is primarily for documentation, issue tracking, and contributing to the library's development.
+**❗ Important Note:** These libraries implement a common execution environment for [Guru Schemas](https://docs.getguru.ai/quickstart/guru-schema-intro) and are provided to users at runtime via the [Guru platform](https://www.getguru.ai/). They are not intended for direct use outside the Guru platform. This repository is primarily for documentation, issue tracking, and contributing to the library's development.
 
 ## Quickstart
 
-To play with these libraries, create your first **Guru Schema** in the [Guru Console](https://docs.getguru.ai/quickstart/guru-console-intro). Check out the [Guru docs](https://docs.getguru.ai/introduction) and the [Guru Discord](https://discord.gg/tCTPVkSCas) for more info and support.
+To use these libraries, sign up in the [Guru Console](https://console.getguru.ai/) and create your first [Guru Schema](https://docs.getguru.ai/quickstart/guru-schema-intro). Check out the [Guru Docs]() and the [Guru Discord](https://discord.gg/tCTPVkSCas) for more info and support.
 
 ## Features
 
-**Modular Design**: Combine advanced vision models in a few lines of code in simple Javascript syntax.
+**Modular Design**: Combine advanced vision models in a few lines of standard Javascript.
 
-**Analysis Helper Functions**: Analyzers like `MovementAnalyzer` provide easy-to-use libraries for domain-specific AI analysis for domains such as sports, healthcare, or retail.
+**Analysis Helper Functions**: Analyzers provide easy-to-use libraries for domain-specific AI analysis for domains such as `MovementAnalyzer` for sports/fitness.
 
-**Advanced Guru Models**: `guru.js` is pre-packaged with state-of-the-art models for tracking movement, humans, and objects in real-time.
+**Advanced Guru Models**: `guru.js` is pre-packaged with state-of-the-art models for tracking human movement and objects in real-time.
 
-**Bring Your Own Model**: Import and leverage any ONNX model into a `guru-js` app alongside other models.
+**Bring Your Own Model**: Import and leverage any ONNX model into a `guru-js` app .
 
 **Customizable Visualization Tools**: Drawing and annotation capabilities to [visualize analysis results](https://www.loom.com/share/458a8cf435a64f01ba8fa86454d9f013) on videos.
 
