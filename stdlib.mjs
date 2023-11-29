@@ -4,20 +4,17 @@ import {
   arrayVelocities,
   averageKeypointLocation,
   averageKeypointLocations,
+  ensureArray,
   gaussianSmooth,
   lowerCamelToSnakeCase,
   movingAverage,
   normalizeNumbers,
-  preprocessedImageToTensor,
-  preprocessImageForObjectDetection,
-  postProcessObjectDetectionResults,
-  prepareTextsForOwlVit,
 } from "./inference_utils.mjs";
 
 import { YOLOXDetector } from "./object_detection.mjs";
 import { GuruPoseEstimator } from "./pose_estimation.mjs";
-
 import { Box, Position, Keypoint, ObjectFacing } from "./core_types.mjs";
+import { cocoClasses } from "./coco.mjs";
 export { GURU_KEYPOINTS, Box, Position, Keypoint, ObjectFacing, Color } from "./core_types.mjs";
 
 /**
@@ -126,11 +123,18 @@ export class Frame {
       getInputSize(poseModel),
     );
 
-    const detModel = this.guruModels.personDetectionModel();
+    const personDetModel = this.guruModels.personDetectionModel();
     this.personDetector = new YOLOXDetector(
-      collectSessions(detModel),
+      collectSessions(personDetModel),
       ["person", "barbell_plates"],
-      getInputSize(detModel),
+      getInputSize(personDetModel),
+    );
+
+    const objectDetModel = this.guruModels.objectDetectionModel();
+    this.objectDetector = new YOLOXDetector(
+      collectSessions(objectDetModel),
+      cocoClasses,
+      getInputSize(objectDetModel),
     );
 
     this.image = image;
@@ -148,6 +152,7 @@ export class Frame {
    * @return {List} A list of VideoObject instances matching the given criteria.
    */
   async findObjects(objectTypes, {attributes = {}, keypoints = true} = {}) {
+    objectTypes = ensureArray(objectTypes);
     const objectBoundaries = await this._findObjectBoundaries(
       objectTypes,
       attributes
@@ -176,56 +181,19 @@ export class Frame {
   }
 
   async _findObjectBoundaries(objectTypes, attributes) {
-    if (objectTypes === "person" || objectTypes === "people") {
+    if (objectTypes.length === 1 && ["person", "people"].includes(objectTypes[0])) {
       return await this._findPeopleBoundaries();
     } else {
-      const preprocessedFrame = preprocessImageForObjectDetection(
-        this.image,
-        768,
-        768
-      );
-      const imageTensor = preprocessedImageToTensor(
-        this.guruModels.ort(),
-        preprocessedFrame
-      );
-
-      let objectBoundaries = [];
-      const textBatches = prepareTextsForOwlVit(objectTypes);
-      for (const textBatch of textBatches) {
-        const textTensors = this.guruModels
-          .tokenizer()
-          .tokenize(textBatch, {padding: true, max_length: 16});
-
-        const model = this.guruModels.objectDetectionModel();
-        const results = await model.session.run({
-          pixel_values: imageTensor,
-          input_ids: textTensors.input_ids,
-          attention_mask: textTensors.attention_mask,
-        });
-
-        objectBoundaries = objectBoundaries.concat(
-          postProcessObjectDetectionResults(results, textBatch).map(
-            (nextObject) => {
-              return {
-                type: nextObject.class,
-                boundary: new Box(
-                  new Position(
-                    nextObject.bbox[0],
-                    nextObject.bbox[1],
-                    nextObject.probability
-                  ),
-                  new Position(
-                    nextObject.bbox[2],
-                    nextObject.bbox[3],
-                    nextObject.probability
-                  )
-                ),
-              };
-            }
-          )
-        );
-      }
-      return objectBoundaries;
+      const detections = await this.objectDetector.run(this.image, objectTypes);
+      const objects = detections.filter(({ label, confidence }) => {
+        return objectTypes.includes(label) && confidence >= .2; 
+      });
+      return objects.map(({ label, box }) => {
+        return {
+          type: label,
+          boundary: box,
+        }
+      });
     }
   }
 

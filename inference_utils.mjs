@@ -113,6 +113,10 @@ export function descaleCoords(x, y, originalWidth, originalHeight, scaledWidth, 
   ];
 }
 
+export function ensureArray(maybeArray) {
+  return Array.isArray(maybeArray) ? maybeArray : [maybeArray];
+}
+
 export function gaussianSmooth(data, sigma) {
   const kernelSize = Math.ceil(sigma * 3) * 2 + 1;
   const kernel = new Array(kernelSize);
