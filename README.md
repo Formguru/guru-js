@@ -20,9 +20,9 @@ To use these libraries, sign up in the [Guru Console](https://console.getguru.ai
 
 **Bring Your Own Model**: Import and leverage any ONNX model into a `guru-js` app .
 
-**Customizable Visualization Tools**: Drawing and annotation capabilities to [visualize analysis results](https://www.loom.com/share/458a8cf435a64f01ba8fa86454d9f013) on videos.
+**Customizable Visualization Tools**: [Visualize AI analysis results](https://www.loom.com/share/458a8cf435a64f01ba8fa86454d9f013) in real-time on any video.
 
-**Deploy Anywhere**: Any app built with `guru.js` can be deployed on the cloud or mobile in [one-click](https://docs.getguru.ai/deploying/guru-api-intro).
+**Deploy Anywhere**: Apps built with `guru.js` can be deployed on the cloud or mobile in [one-click](https://docs.getguru.ai/deploying/guru-api-intro).
 
 ## Core Libraries
 
