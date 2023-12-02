@@ -1,4 +1,4 @@
-# guru.js -- Javascript Libraries for Computer Vision
+# guru.js -- Easy-to-use Javascript libraries for computer vision
 
 ## Overview
 
@@ -14,11 +14,11 @@ To use these libraries, sign up in the [Guru Console](https://console.getguru.ai
 
 **Modular Design**: Combine advanced vision models in a few lines of standard Javascript.
 
-**Analysis Helper Functions**: Analyzers provide easy-to-use libraries for domain-specific AI analysis for domains such as `MovementAnalyzer` for sports/fitness.
+**Advanced Models**: `guru.js` is pre-packaged with state-of-the-art models for real-time pose estimation, person tracking, and object detection, and object tracking.
 
-**Advanced Guru Models**: `guru.js` is pre-packaged with state-of-the-art models for tracking human movement and objects in real-time.
+**Bring Your Own Model**: Import and leverage any ONNX model into a `guru-js` app.
 
-**Bring Your Own Model**: Import and leverage any ONNX model into a `guru-js` app .
+**Analysis Helper Functions**: `guru-js` analyzers provide easy-to-use libraries for domain-specific AI analysis such as `MovementAnalyzer` for sports/fitness.
 
 **Customizable Visualization Tools**: [Visualize AI analysis results](https://www.loom.com/share/458a8cf435a64f01ba8fa86454d9f013) in real-time on any video.
 
