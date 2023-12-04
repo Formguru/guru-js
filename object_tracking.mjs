@@ -345,10 +345,18 @@ class OCSortTracker {
     this.tracker = new libocsort.Tracker(config);
   }
 
+  /**
+   * Update the tracker and assign each detection to a track.
+   * 
+   * @param {Array[Detection]} detections An array where each element has the following structure (note: bounding-box coordinates must be denormalized: 
+   *    { confidence: float, classId: int, box: { topLeft: { x, y }, bottomRight: { x, y }}}]
+   * @returns An array with the same structure as the input but with a trackId added to each detection.
+   */
   update(detections) {
     const _detections = new libocsort.DetectionArray();
     detections.forEach(
-      ({ label, confidence, boundary: { x1, y1, x2, y2 } }) => {
+      ({ classId, confidence, box }) => {
+        const { topLeft: { x: x1, y: y1 }, bottomRight: { x: x2, y: y2 } }  = box
         const _box = new libocsort.Box();
         _box.x1 = x1;
         _box.y1 = y1;
@@ -361,7 +369,7 @@ class OCSortTracker {
         const _detection = new libocsort.Detection();
         _detection.box = _box;
         _detection.confidence = confidence;
-        _detection.class_id = label;
+        _detection.class_id = classId;
         _detections.push_back(_detection);
       }
     );
@@ -376,10 +384,10 @@ class OCSortTracker {
         box: { x1, y1, x2, y2 },
       } = trackResult.get(i);
       output.push({
-        label: class_id,
+        classId: class_id,
         trackId: track_id,
         confidence,
-        boundary: { x1, y1, x2, y2 },
+        box: { topLeft: { x: x1, y: y1 }, bottomRight: { x: x2, y: y2 } },
       });
     }
     return output;
