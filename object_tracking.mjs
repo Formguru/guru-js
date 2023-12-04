@@ -48,7 +48,6 @@ export class MixFormerObjectTracker {
     this.debug = debug;
   }
 
-
   /**
    * Initialize the tracker with the initial frame
    * @param {} image The template image
@@ -102,7 +101,7 @@ export class MixFormerObjectTracker {
 
   /**
    * Update the tracker with the latest image
-   * 
+   *
    * @param {*} image The latest image
    * @returns { detection: Detection, isTracking: boolean}
    */
@@ -289,5 +288,108 @@ export class MixFormerObjectTracker {
     w = Math.max(margin, x2 - x1);
     h = Math.max(margin, y2 - y1);
     return [x1, y1, w, h];
+  }
+}
+
+let libocsort = null;
+export async function createOCSortTracker(trackerConfig) {
+  if (libocsort === null) {
+    const Module = await import("./wasm/libocsort.mjs");
+    try {
+      libocsort = await Module();
+    } catch (e) {
+      libocsort = await Module.default();
+    }
+  }
+  return new OCSortTracker(trackerConfig);
+}
+
+
+class OCSortTracker {
+  constructor({
+    detectionThreshold,
+    maxAge,
+    minHits,
+    iouThreshold,
+    deltaT,
+    associationFunction,
+    inertia,
+    useByte,
+  } = {}) {
+    const config = new libocsort.TrackerConfig();
+    const isSet = (x) => x !== undefined && x !== null;
+    if (isSet(detectionThreshold)) {
+      config.det_thresh = detectionThreshold;
+    }
+    if (isSet(maxAge)) {
+      config.max_age = maxAge;
+    }
+    if (isSet(minHits)) {
+      config.min_hits = minHits;
+    }
+    if (isSet(iouThreshold)) {
+      config.iou_threshold = iouThreshold;
+    }
+    if (isSet(deltaT)) {
+      config.delta_t = deltaT;
+    }
+    if (isSet(associationFunction)) {
+      config.asso_func = associationFunction;
+    }
+    if (isSet(inertia)) {
+      config.inertia = inertia;
+    }
+    if (isSet(useByte)) {
+      config.use_byte = useByte;
+    }
+    this.tracker = new libocsort.Tracker(config);
+  }
+
+  /**
+   * Update the tracker and assign each detection to a track.
+   * 
+   * @param {Array[Detection]} detections An array where each element has the following structure (note: bounding-box coordinates must be denormalized: 
+   *    { confidence: float, classId: int, box: { topLeft: { x, y }, bottomRight: { x, y }}}]
+   * @returns An array with the same structure as the input but with a trackId added to each detection.
+   */
+  update(detections) {
+    const _detections = new libocsort.DetectionArray();
+    detections.forEach(
+      ({ classId, confidence, box }) => {
+        const { topLeft: { x: x1, y: y1 }, bottomRight: { x: x2, y: y2 } }  = box
+        const _box = new libocsort.Box();
+        _box.x1 = x1;
+        _box.y1 = y1;
+        _box.x2 = x2;
+        _box.y2 = y2;
+        const [boxWidth, boxHeight] = [x2 - x1, y2 - y1];
+        if (boxWidth < 1 || boxHeight < 1) {
+          throw new Error("Length and width of box must be >= 1 pixel (maybe you forgot to denormalize?)");
+        }
+        const _detection = new libocsort.Detection();
+        _detection.box = _box;
+        _detection.confidence = confidence;
+        _detection.class_id = classId;
+        _detections.push_back(_detection);
+      }
+    );
+    const trackResult = this.tracker.update(_detections);
+
+    const output = [];
+    for (let i = 0; i < trackResult.size(); i++) {
+      const {
+        track_id,
+        class_id,
+        confidence,
+        box: { x1, y1, x2, y2 },
+      } = trackResult.get(i);
+      output.push({
+        classId: class_id,
+        trackId: track_id,
+        confidence,
+        box: { topLeft: { x: x1, y: y1 }, bottomRight: { x: x2, y: y2 } },
+      });
+    }
+    return output;
   }
 }
