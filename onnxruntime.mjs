@@ -1,7 +1,7 @@
 const guruModels = {
   pose: "https://formguru-datasets.s3.us-west-2.amazonaws.com/on-device/20230905/guru-rtmpose-img-256x192.onnx",
   person_detection: "https://formguru-datasets.s3.us-west-2.amazonaws.com/on-device/20230511/tiny-yolov3.onnx",
-  object_detection: "https://formguru-datasets.s3.us-west-2.amazonaws.com/on-device/20230718/owl-vit.onnx",
+  object_detection: "https://formguru-datasets.s3.us-west-2.amazonaws.com/on-device/20231126/yolox-s-mmdet-coco-fp32.onnx",
 };
 var customModels = {};
 
@@ -10,16 +10,22 @@ const getModelInfo = () => {
 }
 
 const loadModelByUrl = async (modelUrl, sessionOptions) => {
-  const cacheName = 'modelCache';
-  const cache = await caches.open(cacheName);
-  let modelResponse = await cache.match(modelUrl);
+  // check whether 'caches' is available globally
+  var modelResponse = null;
+  var cacheHook = (response) => { };  // no-op unless we have the cache API
+  if ('caches' in globalThis) {
+    const cacheName = 'modelCache';
+    const cache = await caches.open(cacheName);
+    modelResponse = await cache.match(modelUrl);
+    cacheHook = (response) => { cache.put(modelUrl, response.clone()); }
+  }
 
   if (modelResponse) {
     console.info(`Using model from cache for ${modelUrl}`);
   } else {
     console.info(`Reading model from URL: ${modelUrl}`);
     modelResponse = await fetch(modelUrl);
-    cache.put(modelUrl, modelResponse.clone());
+    cacheHook(modelResponse);
   }
 
   const modelBytes = await modelResponse.arrayBuffer();
