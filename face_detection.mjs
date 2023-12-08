@@ -1,15 +1,22 @@
 import { resize } from "./preprocess.mjs";
-import { getOrt, loadModelByName } from "./onnxruntime.mjs";
+import { getOrt } from "./onnxruntime.mjs";
 import { tensorToMatrix } from "./inference_utils.mjs";
 
 export class GuruFaceDetector {
+  /**
+   * Initializes the GuruFaceDetector for face detection using a pre-trained ONNX model.
+   *
+   * The constructor expects a 'guruModel' object which contains the ONNX model session
+   * specifically trained for face detection tasks. This model is utilized to perform
+   * inference on the input images. Additionally, an ONNX Runtime (ORT) instance is
+   * retrieved and stored for further use in the model inference process.
+   *
+   * @param {Object} guruModel - An object containing the ONNX model session.
+   *                             This is typically loaded from an external ONNX model file.
+   */
   constructor(guruModel) {
     this.model = guruModel.session;
     this.ort = getOrt();
-  }
-
-  hello() {
-    console.log("hello");
   }
 
   _preprocessImage(image) {
